@@ -1,0 +1,7 @@
+init_accuracy = 0.08716000000000002
+after newton method on third layer = 0.17190000000000005
+
+
+2 epochs, just on first layer
+init_accuracy = 0.10463999999999996
+final_accuracy = 0.19694
