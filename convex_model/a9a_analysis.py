@@ -318,7 +318,7 @@ if __name__ == "__main__":
     a9a = A9A_Analysis(a9a_dataset_train, labels_train, a9a_dataset_test, labels_test)
     # init_w = torch.rand(a9a.X.shape[0])
     
-    #w, _, _, _ = a9a.newton_method_exact(10, init_w)
+    # w, _, _, _ = a9a.newton_method_exact(10, init_w)
     #_, gradient_descent_loss_values = a9a.gradient_descent()
     # print(gradient_descent_loss_values[-1])#
     #torch.save(torch.tensor(gradient_descent_loss_values), 'model_statistics/gradient_descent_loss.pt')
