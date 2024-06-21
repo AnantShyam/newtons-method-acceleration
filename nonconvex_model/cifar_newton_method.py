@@ -49,18 +49,36 @@ def newton_method(model, data_loader, num_epochs, layers_to_be_updated):
                     weight_vector = weight_vector.reshape(len(weight_vector), 1)
 
                     gradient = grads[i]
-                    eigenvalues, eigenvectors = hessian_class.eigenvalues(maxIter=1, top_n=1)
-                    eigenvectors = eigenvectors[0]
+                    eigenvalues, eigenvectors = hessian_class.eigenvalues(maxIter=1, top_n=3)
 
-                    eigenvalue = eigenvalues[0]
-                    eigenvector = eigenvectors[i].flatten()
-                    eigenvector = eigenvector.reshape(len(eigenvector), 1)
+                    eigenvector_matrix = None 
+                    num_eigenvectors = len(eigenvectors)
+                    for j in range(num_eigenvectors):
+                        eigenvector = eigenvectors[j][i].flatten()
+                        eigenvector = eigenvector.reshape(1, len(eigenvector))
+                        if eigenvector_matrix is None:
+                            eigenvector_matrix = eigenvector
+                        else:
+                            eigenvector_matrix = torch.cat((eigenvector_matrix, eigenvector))
+                    
+                    eigenvector_matrix = eigenvector_matrix.T 
+                    hessian_matrix_first_matrix = eigenvector_matrix @ torch.diag(torch.tensor(eigenvalues)) @ eigenvector_matrix.T
+                    
+                    # for j in range(len(eigenvectors)):
+                    #     print(eigenvectors[j][i].shape)
+                    #print()
+                    
+                    # eigenvectors = eigenvectors[0]
+
+                    # eigenvalue = eigenvalues[0]
+                    # eigenvector = eigenvectors[i].flatten()
+                    # eigenvector = eigenvector.reshape(len(eigenvector), 1)
                     
                     gradient = gradient.flatten()
                     gradient = gradient.reshape(len(gradient), 1)
 
-                    # approximate hessian
-                    hessian_matrix_first_matrix = (eigenvalue) * (eigenvector @ eigenvector.T)
+                    # # approximate hessian
+                    # hessian_matrix_first_matrix = (eigenvalue) * (eigenvector @ eigenvector.T)
                     
                     tau = 10**-5 
 
@@ -101,4 +119,5 @@ if __name__ == "__main__":
     #print(cifar.test_model(trained_model, train_data_loader))
     # torch.save(trained_model, 'model_weights/trained_model_newton_method_test.pt')
     # print('Accuracy: ')
+    
     
