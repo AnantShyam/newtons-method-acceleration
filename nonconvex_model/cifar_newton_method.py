@@ -23,7 +23,7 @@ import copy
 
 # if no positive eigenvalues, take a gradient step and try again
 
-def newton_method(model, data_loader, num_epochs, layers_to_be_updated):
+def newton_method(model, data_loader, num_epochs, layers_to_be_updated, num_eigenvalues):
 
     # layers_to_be_updated = indices of layers to run newton's method on
     
@@ -49,7 +49,7 @@ def newton_method(model, data_loader, num_epochs, layers_to_be_updated):
                     weight_vector = weight_vector.reshape(len(weight_vector), 1)
 
                     gradient = grads[i]
-                    eigenvalues, eigenvectors = hessian_class.eigenvalues(maxIter=1, top_n=3)
+                    eigenvalues, eigenvectors = hessian_class.eigenvalues(maxIter=1, top_n=num_eigenvalues)
 
                     eigenvector_matrix = None 
                     num_eigenvectors = len(eigenvectors)
@@ -101,15 +101,35 @@ def newton_method(model, data_loader, num_epochs, layers_to_be_updated):
 
 if __name__ == "__main__":
     train_data_loader, test_data_loader = cifar.create_train_test_dataloaders(2000)
-    initial_model = cifar_model.CIFAR10Net()
+    # initial_model = cifar_model.CIFAR10Net()
+    # torch.save(initial_model, 'model_weights/initial_cifar_model.pt')
     #print(cifar.test_model(initial_model, train_data_loader))
     #train_newton_method(initial_model, train_data_loader, 1)
 
-
+    initial_model = torch.load('model_weights/initial_cifar_model.pt')
     # run newton's method on just first layer for 5 epochs and plot accuracies
 
     num_epochs = 4
-    trained_model, train_accuracies = newton_method(initial_model, train_data_loader, num_epochs, [0])
+
+    #eigenvalues = [1, 5, 10, 50, 100, 200, 500]
+    eigenvalues = [5]
+
+    for eigenvalue in eigenvalues:
+        _, train_accuracies = newton_method(initial_model, train_data_loader, num_epochs, [0], eigenvalue)
+        
+        print(eigenvalue)
+        print(train_accuracies)
+        
+        with open('eigenvalue_accuracies.txt', 'w') as f:
+            f.write(str(eigenvalue))
+            f.write('\n')
+            f.write(str(train_accuracies))
+        # initial_model = cifar_model.CIFAR10Net()
+        initial_model = torch.load('model_weights/initial_cifar_model.pt')
+    
+
+
+
     
     # plt.plot([i for i in range(1, num_epochs + 1)], train_accuracies)
     # plt.xlabel('Epoch')

@@ -5,3 +5,33 @@ after newton method on third layer = 0.17190000000000005
 2 epochs, just on first layer
 init_accuracy = 0.10463999999999996
 final_accuracy = 0.19694
+
+-------------
+1 eigenvalue 
+[0.10065999999999997, 0.12636000000000003, 0.12636000000000003, 0.12636000000000003]
+
+
+5 eigenvalues
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------
+one eigenvalue
+Train accuracies = [0.10972000000000004, 0.15918]
+
+5 eigenvalues 
+Train accurcies = 
+[0.11563999999999997, 0.17398000000000002]
+
+10 eigenvalues 
+10: [0.08118000000000003, 0.13292000000000004]
